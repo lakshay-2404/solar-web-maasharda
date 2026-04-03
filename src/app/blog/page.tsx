@@ -1,62 +1,47 @@
-"use client";
+import type { Metadata } from "next";
+import { SunMedium } from "lucide-react";
 
-import Link from "next/link";
-import { blogs } from "./data";
+import BlogCard from "@/components/blog/BlogCard";
+import ScrollReveal from "@/components/ui/ScrollReveal";
+import { getAllBlogPosts } from "@/lib/blog";
 
-export default function BlogIndex() {
+export const metadata: Metadata = {
+  title: "Solar Energy Blog | Maa Sharda Distributors",
+  description:
+    "Solar panels, subsidy support, sizing aur installation ke baare mein complete guides - simple Hinglish mein.",
+};
+
+export default function BlogPage() {
+  const posts = getAllBlogPosts();
+
   return (
-    <main className="max-w-7xl mx-auto px-8 py-16">
-      {/* Hero Section */}
-      <section className="mb-20">
-        <div className="relative overflow-hidden rounded-xl bg-primary-container p-12 md:p-20 flex flex-col md:flex-row items-center gap-12">
-          <div className="z-10 flex-1">
-            <span className="inline-block bg-secondary px-3 py-1 rounded text-white text-xs font-bold uppercase tracking-widest mb-6">Expert Insights</span>
-            <h1 className="text-white text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-              Solar Powering <br/>Yamunanagar
-            </h1>
-            <p className="text-on-primary-container text-lg max-w-lg mb-8 leading-relaxed">
-              Stay informed with the latest solar technology, local subsidy updates, and installation guides curated specifically for Haryana's industrial hub.
+    <div className="min-h-screen bg-cream">
+      <section className="relative overflow-hidden bg-green-900 px-6 py-14 text-white md:px-8 md:py-20">
+        <div className="mx-auto max-w-6xl">
+          <ScrollReveal className="max-w-3xl">
+            <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-amber-400">
+              Knowledge Hub
             </p>
-          </div>
-          <div className="relative flex-1 w-full aspect-[4/3] rounded-lg overflow-hidden border border-white/10 shadow-2xl">
-            <img 
-              alt="Solar Energy" 
-              className="absolute inset-0 w-full h-full object-cover" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYlBWkzPBFOwxhSpDpwulcEPqbu9vWEogktK2O2CNvNd22HydrogopiMqq-hVBeSUeD-bSYsLqmHV4pbc0ckWMEkDWCndRP1QE6oiPIu-v9hqG1wAOZ6KzG7XHPNhVbEmi4wQBqVFwmvGbdSSQxUTOWTPnWMuvX5FvwYKqmTzLLNoUYq02hJHzz951wcDtMuf5aj1KTczE3C_i8mMoMIhD0J2aNe6W1MtXh8eyoWDFiLxSt84lSSrjjj-8R1Ax-cP2fvjTh1Is9go"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
-          </div>
+            <h1 className="text-4xl font-medium leading-tight md:text-6xl">
+              सोलर जानकारी और मार्गदर्शन
+            </h1>
+            <p className="mt-4 max-w-xl text-white/75">
+              Subsidy, installation, sizing aur practical planning - sab kuch simple Hinglish mein.
+            </p>
+          </ScrollReveal>
+        </div>
+        <SunMedium className="pointer-events-none absolute right-[-1.5rem] top-4 h-40 w-40 rotate-12 text-white/10 md:right-10 md:top-8 md:h-56 md:w-56" />
+      </section>
+
+      <section className="mx-auto -mt-8 max-w-6xl px-6 pb-16 md:px-8 md:pb-24">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {posts.map((post) => (
+            <ScrollReveal key={post.slug}>
+              <BlogCard post={post} />
+            </ScrollReveal>
+          ))}
         </div>
       </section>
-
-      {/* Blog Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
-        {blogs.map(blog => (
-          <article key={blog.slug} className="bg-surface-container-lowest rounded-xl overflow-hidden shadow-lg border border-surface-container-high flex flex-col transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl group">
-            <div className="aspect-video overflow-hidden">
-              <img alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={blog.image}/>
-            </div>
-            <div className="p-6 flex-1 flex flex-col">
-              <span className="text-secondary font-bold text-xs uppercase tracking-widest mb-3">{blog.category}</span>
-              <h3 className="text-primary text-xl font-bold mb-3 leading-snug">{blog.title}</h3>
-              <p className="text-on-surface-variant text-sm line-clamp-2 mb-6">{blog.desc}</p>
-              <Link className="mt-auto flex items-center text-secondary font-bold text-sm gap-2 hover:gap-4 transition-all" href={`/blog/${blog.slug}`}>
-                Padhein <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </Link>
-            </div>
-          </article>
-        ))}
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="bg-surface-container-low rounded-xl p-10 md:p-16 text-center shadow-lg">
-        <h2 className="text-primary text-3xl font-extrabold mb-4">Never Miss a Solar Update</h2>
-        <p className="text-on-surface-variant max-w-xl mx-auto mb-10">Get the latest pricing and subsidy news delivered straight to your inbox once a month.</p>
-        <form className="flex flex-col md:flex-row gap-4 max-w-lg mx-auto">
-          <input className="flex-1 rounded-lg border border-outline-variant bg-white px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="Your email address" type="email" />
-          <button className="bg-primary text-white px-8 py-4 rounded-lg font-bold hover:bg-opacity-90 transition-all" type="button" onClick={() => alert("Subscribed successfully!")}>Subscribe Now</button>
-        </form>
-      </section>
-    </main>
+    </div>
   );
 }
