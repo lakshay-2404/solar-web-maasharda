@@ -1,4 +1,7 @@
 export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+export const DEFAULT_WHATSAPP_NUMBER = "919355570048";
+export const CONTACT_PHONE_HREF = "tel:+919355570048";
+export const CONTACT_PHONE_DISPLAY = "+91 93555 70048";
 
 export const SUBSIDY_RATES = {
   1: 30000,

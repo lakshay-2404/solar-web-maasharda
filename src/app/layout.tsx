@@ -52,8 +52,14 @@ export default function RootLayout({
         <SchemaMarkup />
       </head>
       <body>
+        <a
+          href="#main-content"
+          className="sr-only fixed left-4 top-4 z-[100] rounded-full bg-green-900 px-4 py-2 text-sm font-medium text-white focus:not-sr-only"
+        >
+          Skip to content
+        </a>
         <Header />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <Footer />
         <WhatsAppButton />
       </body>

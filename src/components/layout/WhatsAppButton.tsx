@@ -3,7 +3,11 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-import { LEAD_CAPTURE_EVENT, LEAD_CAPTURE_STORAGE_KEY } from "@/lib/constants";
+import {
+  DEFAULT_WHATSAPP_NUMBER,
+  LEAD_CAPTURE_EVENT,
+  LEAD_CAPTURE_STORAGE_KEY,
+} from "@/lib/constants";
 import { buildWhatsAppLeadMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 
 interface LeadPrefillData {
@@ -34,7 +38,7 @@ export default function WhatsAppButton() {
   }, []);
 
   const href = buildWhatsAppUrl(
-    number || "919355570048",
+    number || DEFAULT_WHATSAPP_NUMBER,
     buildWhatsAppLeadMessage({
       source: "Website WhatsApp Button",
       systemSize: prefill.systemSize ? `${prefill.systemSize} kW` : undefined,
