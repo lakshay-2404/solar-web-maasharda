@@ -11,4 +11,5 @@ export interface LeadResponse {
   success: boolean;
   message: string;
   whatsappUrl?: string;
+  queued?: boolean;
 }

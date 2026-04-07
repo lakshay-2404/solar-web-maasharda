@@ -14,36 +14,89 @@ import {
   staggerContainerVariants,
   useScrollAnimation,
 } from "@/hooks/useScrollAnimation";
+import type { SiteLanguage } from "@/lib/site-language";
 
-const benefits = [
-  {
-    icon: BadgePercent,
-    title: "सब्सिडी end-to-end",
-    description: "Required documents lene ke baad portal filing se approval tak poora kaam hum sambhalte hain.",
-  },
-  {
-    icon: IndianRupee,
-    title: "फाइनेंसिंग file support",
-    description: "Up to 90% financing ke liye file ready karke application support humari side se hota hai.",
-  },
-  {
-    icon: Wrench,
-    title: "लोड पासिंग से meter change",
-    description: "Load passing, installation coordination aur meter change ek connected workflow me handle hota hai.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "विश्वसनीय ब्रांड",
-    description: "Panels, inverters, batteries aur accessories tested brand mix se plan kiye jaate hain.",
-  },
-  {
-    icon: Clock3,
-    title: "तेज़ follow-up",
-    description: "Lead aane ke baad WhatsApp aur call par clear next step jaldi share kiya jaata hai.",
-  },
-];
+interface BenefitsGridProps {
+  language?: SiteLanguage;
+}
 
-export default function BenefitsGrid() {
+export default function BenefitsGrid({
+  language = "hi",
+}: BenefitsGridProps) {
+  const copy = {
+    hi: {
+      eyebrow: "क्यों चुनें",
+      title: "हम सौर काम को सरल और भरोसेमंद बनाते हैं",
+      benefits: [
+        {
+          icon: BadgePercent,
+          title: "सब्सिडी की पूरी सहायता",
+          description:
+            "ज़रूरी दस्तावेज मिलते ही पोर्टल आवेदन से मंजूरी तक पूरा क्रम हम संभालते हैं।",
+        },
+        {
+          icon: IndianRupee,
+          title: "वित्त सहायता फाइल में मदद",
+          description:
+            "90% तक की वित्त सहायता के लिए फाइल तैयार करने और आवेदन में हमारी टीम साथ रहती है।",
+        },
+        {
+          icon: Wrench,
+          title: "लोड पासिंग से मीटर परिवर्तन तक",
+          description:
+            "लोड पासिंग, स्थापना समन्वय और मीटर परिवर्तन का काम एक ही क्रम में पूरा होता है।",
+        },
+        {
+          icon: ShieldCheck,
+          title: "भरोसेमंद ब्रांड चयन",
+          description:
+            "पैनल, इन्वर्टर, बैटरी और जरूरी सामान परखी हुई ब्रांड श्रेणी से चुने जाते हैं।",
+        },
+        {
+          icon: Clock3,
+          title: "तेज़ अगला कदम",
+          description:
+            "पूछताछ मिलते ही व्हाट्सऐप और कॉल पर अगला साफ़ कदम जल्दी बताया जाता है।",
+        },
+      ],
+    },
+    en: {
+      eyebrow: "Why Maa Sharda",
+      title: "How we make solar projects simpler and more dependable",
+      benefits: [
+        {
+          icon: BadgePercent,
+          title: "End-to-end subsidy support",
+          description:
+            "Once the required documents are collected, we handle everything from portal filing to approvals.",
+        },
+        {
+          icon: IndianRupee,
+          title: "Financing file support",
+          description:
+            "For up to 90% financing, we help prepare the file and support the application process.",
+        },
+        {
+          icon: Wrench,
+          title: "From load passing to meter change",
+          description:
+            "Load passing, installation coordination, and meter change are handled as one connected workflow.",
+        },
+        {
+          icon: ShieldCheck,
+          title: "Reliable brand mix",
+          description:
+            "Panels, inverters, batteries, and accessories are planned from a tested brand mix.",
+        },
+        {
+          icon: Clock3,
+          title: "Fast follow-up",
+          description:
+            "After a lead comes in, we share the next clear step quickly on WhatsApp and call.",
+        },
+      ],
+    },
+  }[language];
   const { ref, inView } = useScrollAnimation();
 
   return (
@@ -51,11 +104,9 @@ export default function BenefitsGrid() {
       <div className="mx-auto max-w-7xl space-y-10">
         <div className="max-w-3xl">
           <p className="text-sm font-medium uppercase tracking-[0.16em] text-amber-500">
-            Why Maa Sharda
+            {copy.eyebrow}
           </p>
-          <h2 className="section-headline mt-3 text-green-900">
-            सोलर प्रोजेक्ट को सरल और भरोसेमंद बनाने का तरीका
-          </h2>
+          <h2 className="section-headline mt-3 text-green-900">{copy.title}</h2>
         </div>
 
         <motion.div
@@ -65,7 +116,7 @@ export default function BenefitsGrid() {
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
         >
-          {benefits.map((benefit) => {
+          {copy.benefits.map((benefit) => {
             const Icon = benefit.icon;
             return (
               <motion.article key={benefit.title} variants={fadeUpVariants} className="card">

@@ -41,9 +41,10 @@
     overflow-x: hidden;
     background-color: #fafaf7;
     color: #1c1c1c;
-    font-family: var(--font-poppins), sans-serif;
-    font-size: 15px;
+    font-family: var(--font-devanagari), var(--font-poppins), sans-serif;
+    font-size: 16px;
     line-height: 1.75;
+    text-wrap: pretty;
   }
 
   input,
@@ -51,11 +52,26 @@
   select {
     font-size: 18px !important;
   }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @keyframes community-marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply h-14 w-full rounded-btn bg-amber-500 text-base font-medium text-white transition-transform hover:bg-amber-400 active:scale-95 md:w-auto md:px-8;
+    @apply h-14 w-full rounded-btn bg-amber-500 text-base font-medium text-white shadow-[0_18px_34px_rgba(245,158,11,0.22)] transition-transform hover:bg-amber-400 active:scale-95 md:w-auto md:px-8;
   }
 
   .btn-secondary {
@@ -63,7 +79,7 @@
   }
 
   .section-padding {
-    @apply px-6 py-12 md:px-8 md:py-24;
+    @apply px-6 py-14 md:px-8 md:py-24;
   }
 
   .section-headline {

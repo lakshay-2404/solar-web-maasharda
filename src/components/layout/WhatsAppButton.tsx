@@ -8,6 +8,7 @@ import {
   LEAD_CAPTURE_EVENT,
   LEAD_CAPTURE_STORAGE_KEY,
 } from "@/lib/constants";
+import { useSiteLanguage } from "@/hooks/useSiteLanguage";
 import { buildWhatsAppLeadMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
 
 interface LeadPrefillData {
@@ -17,6 +18,7 @@ interface LeadPrefillData {
 
 export default function WhatsAppButton() {
   const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+  const language = useSiteLanguage();
   const [prefill, setPrefill] = useState<LeadPrefillData>({});
 
   useEffect(() => {
@@ -51,8 +53,8 @@ export default function WhatsAppButton() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat on WhatsApp"
-      className="fixed bottom-6 right-4 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg md:bottom-8 md:right-8"
+      aria-label={language === "hi" ? "व्हाट्सऐप पर बात करें" : "Chat on WhatsApp"}
+      className="fixed bottom-[calc(6.5rem+env(safe-area-inset-bottom))] right-4 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-[0_16px_32px_rgba(37,211,102,0.3)] md:bottom-8 md:right-8"
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
       initial={{ scale: 0, opacity: 0 }}

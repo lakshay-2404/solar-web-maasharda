@@ -11,9 +11,11 @@ import {
   MAX_SUBSIDY,
 } from "@/lib/constants";
 import { calculate, type CalculatorResult } from "@/lib/calculator";
+import type { SiteLanguage } from "@/lib/site-language";
 
 interface CalculatorProps {
   showAdvancedFinancials?: boolean;
+  language?: SiteLanguage;
 }
 
 function formatIndianNumber(value: number) {
@@ -28,7 +30,70 @@ function storeLeadPrefill(monthlyBill: string, systemSize: string) {
 
 export default function Calculator({
   showAdvancedFinancials = false,
+  language = "hi",
 }: CalculatorProps) {
+  const copy = {
+    hi: {
+      eyebrow: "सौर गणक",
+      title: "अपने मासिक बिल से सही सौर योजना देखें",
+      description:
+        "अपना मासिक बिजली बिल दर्ज कीजिए। हम उपयुक्त क्षमता, संभावित मासिक उत्पादन, सब्सिडी और अनुमानित लागत दिखाएंगे।",
+      inputTitle: "मासिक बिल दर्ज करें",
+      inputExample: "उदाहरण: 2500, 4200, 6500",
+      inputPlaceholder: "अपना मासिक बिजली बिल",
+      quickNote: "ध्यान दें",
+      quickDescription:
+        "यह अनुमान DCR रूफटॉप लागत और व्यवहारिक उत्पादन मानों पर आधारित है। अंतिम योजना छत के आकार और स्वीकृत लोड के अनुसार तय होती है।",
+      resultTitle: "आपकी अनुमानित सौर योजना",
+      resultSubtitle: "भारतीय संख्या पद्धति में सारांश",
+      recommendedSystem: "उपयुक्त प्रणाली",
+      monthlyGeneration: "मासिक उत्पादन",
+      monthlySavings: "मासिक बचत",
+      annualSavings: "वार्षिक बचत",
+      subsidy: "सरकारी सब्सिडी",
+      estimatedCost: "अनुमानित कुल लागत",
+      maxSubsidyNote: "3kW के बाद सब्सिडी नहीं बढ़ती। 78,000 रुपये इसकी अधिकतम सीमा है।",
+      financeNote: "90% तक वित्त सहायता की फाइल में मदद उपलब्ध है।*",
+      cta: "इस योजना के लिए निःशुल्क परामर्श लें",
+      emptyTitle: "परिणाम यहां दिखाई देगा",
+      emptyDescription:
+        "जैसे ही आप मासिक बिल भरेंगे, उपयुक्त क्षमता, उत्पादन और सब्सिडी का अनुमान यहां दिखाई देगा।",
+      perMonth: "/माह",
+      perYear: "/वर्ष",
+      units: "यूनिट",
+      maxPrefix: "अधिकतम - रु ",
+    },
+    en: {
+      eyebrow: "Solar Savings Calculator",
+      title: "See the right solar plan from your monthly bill",
+      description:
+        "Enter your monthly electricity bill and we will show the recommended system size, monthly generation, subsidy, and estimated system cost.",
+      inputTitle: "Enter your monthly bill",
+      inputExample: "Example: 2500, 4200, 6500",
+      inputPlaceholder: "Your monthly electricity bill",
+      quickNote: "Quick note",
+      quickDescription:
+        "This estimate is based on DCR rooftop pricing and practical generation assumptions. The final plan is confirmed against roof size and sanctioned load.",
+      resultTitle: "Your estimated solar plan",
+      resultSubtitle: "Summary in Indian number format",
+      recommendedSystem: "Recommended system",
+      monthlyGeneration: "Monthly generation",
+      monthlySavings: "Monthly savings",
+      annualSavings: "Annual savings",
+      subsidy: "Government subsidy",
+      estimatedCost: "Estimated system cost",
+      maxSubsidyNote: "Subsidy does not increase after 3kW. Rs 78,000 is the maximum cap.",
+      financeNote: "Up to 90% financing file support available.*",
+      cta: "Get a free consultation for this plan",
+      emptyTitle: "Your result will appear here",
+      emptyDescription:
+        "As soon as you enter the monthly bill, the system size, monthly generation, and subsidy estimate will appear here.",
+      perMonth: "/month",
+      perYear: "/year",
+      units: "units",
+      maxPrefix: "MAX - Rs ",
+    },
+  }[language];
   const [monthlyBill, setMonthlyBill] = useState("");
   const [result, setResult] = useState<CalculatorResult | null>(null);
 
@@ -61,15 +126,10 @@ export default function Calculator({
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 max-w-3xl">
           <p className="text-sm font-medium uppercase tracking-[0.16em] text-amber-500">
-            Solar Savings Calculator
+            {copy.eyebrow}
           </p>
-          <h2 className="section-headline mt-3 text-green-900">
-            अपने मासिक बिल से सोलर योजना देखें
-          </h2>
-          <p className="mt-4 text-neutral-600">
-            Bas apna monthly bijli bill daliye. Hum aapko recommended system size,
-            monthly generation, subsidy aur estimated system cost ka quick view dikhayenge.
-          </p>
+          <h2 className="section-headline mt-3 text-green-900">{copy.title}</h2>
+          <p className="mt-4 text-neutral-600">{copy.description}</p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,420px)] md:items-start">
@@ -79,8 +139,8 @@ export default function Calculator({
                 <CalculatorIcon className="h-6 w-6" />
               </span>
               <div>
-                <h3 className="text-xl font-medium text-green-900">मासिक बिल दर्ज करें</h3>
-                <p className="text-sm text-neutral-600">Example: 2500, 4200, 6500</p>
+                <h3 className="text-xl font-medium text-green-900">{copy.inputTitle}</h3>
+                <p className="text-sm text-neutral-600">{copy.inputExample}</p>
               </div>
             </div>
 
@@ -94,18 +154,14 @@ export default function Calculator({
                 pattern="[0-9]*"
                 value={monthlyBill}
                 onChange={(event) => handleChange(event.target.value)}
-                placeholder="Aapka monthly bijli bill"
+                placeholder={copy.inputPlaceholder}
                 className="h-14 border-border bg-white pl-14 text-lg"
               />
             </div>
 
             <div className="rounded-card border border-border bg-green-100/40 p-5 text-sm text-neutral-700">
-              <p className="font-medium text-green-900">Quick note</p>
-              <p className="mt-2">
-                DCR rooftop pricing aur practical generation assumption ke hisaab se
-                estimate dikhaya ja raha hai. Final plan roof size aur sanctioned load
-                ke hisaab se confirm hota hai.
-              </p>
+              <p className="font-medium text-green-900">{copy.quickNote}</p>
+              <p className="mt-2">{copy.quickDescription}</p>
             </div>
           </div>
 
@@ -125,45 +181,49 @@ export default function Calculator({
                       <Wallet className="h-6 w-6" />
                     </span>
                     <div>
-                      <h3 className="text-xl font-medium text-green-900">आपकी अनुमानित सोलर योजना</h3>
-                      <p className="text-sm text-neutral-600">Indian number format me summary</p>
+                      <h3 className="text-xl font-medium text-green-900">{copy.resultTitle}</h3>
+                      <p className="text-sm text-neutral-600">{copy.resultSubtitle}</p>
                     </div>
                   </div>
 
                   <div className="mt-6 space-y-4">
                     <div className="flex items-center justify-between gap-4 border-b border-border pb-3">
-                      <span className="text-sm text-neutral-600">Recommended system</span>
-                      <span className="text-lg font-medium text-green-900">{result.systemKw} kW</span>
-                    </div>
-                    <div className="flex items-center justify-between gap-4 border-b border-border pb-3">
-                      <span className="text-sm text-neutral-600">Monthly generation</span>
-                      <span className="font-medium text-green-900">
-                        ~{formatIndianNumber(result.unitsPerMonth)} units
+                      <span className="text-sm text-neutral-600">{copy.recommendedSystem}</span>
+                      <span className="text-lg font-medium text-green-900">
+                        {result.systemKw} kW
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-4 border-b border-border pb-3">
-                      <span className="text-sm text-neutral-600">Monthly savings</span>
+                      <span className="text-sm text-neutral-600">{copy.monthlyGeneration}</span>
                       <span className="font-medium text-green-900">
-                        Rs {formatIndianNumber(result.monthlySavings)}/month
+                        ~{formatIndianNumber(result.unitsPerMonth)} {copy.units}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-4 border-b border-border pb-3">
-                      <span className="text-sm text-neutral-600">Annual savings</span>
+                      <span className="text-sm text-neutral-600">{copy.monthlySavings}</span>
                       <span className="font-medium text-green-900">
-                        Rs {formatIndianNumber(result.annualSavings)}/year
+                        Rs {formatIndianNumber(result.monthlySavings)}
+                        {copy.perMonth}
                       </span>
                     </div>
                     <div className="flex items-center justify-between gap-4 border-b border-border pb-3">
-                      <span className="text-sm text-neutral-600">Govt. subsidy</span>
+                      <span className="text-sm text-neutral-600">{copy.annualSavings}</span>
+                      <span className="font-medium text-green-900">
+                        Rs {formatIndianNumber(result.annualSavings)}
+                        {copy.perYear}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-4 border-b border-border pb-3">
+                      <span className="text-sm text-neutral-600">{copy.subsidy}</span>
                       <span className="font-medium text-green-900">
                         {result.systemKw >= 3
-                          ? `MAX - Rs ${formatIndianNumber(MAX_SUBSIDY)}`
+                          ? `${copy.maxPrefix}${formatIndianNumber(MAX_SUBSIDY)}`
                           : `Rs ${formatIndianNumber(result.subsidy)}`}
                       </span>
                     </div>
                     {showAdvancedFinancials ? (
                       <div className="flex items-center justify-between gap-4">
-                        <span className="text-sm text-neutral-600">Estimated system cost</span>
+                        <span className="text-sm text-neutral-600">{copy.estimatedCost}</span>
                         <span className="font-medium text-green-900">
                           Rs {formatIndianNumber(result.estimatedSystemCost)}
                         </span>
@@ -173,18 +233,18 @@ export default function Calculator({
 
                   {result.systemKw >= 3 ? (
                     <p className="mt-5 rounded-card bg-amber-100 px-4 py-3 text-sm text-amber-900">
-                      3kW ke baad subsidy nahi badhti - Rs 78,000 maximum cap hai.
+                      {copy.maxSubsidyNote}
                     </p>
                   ) : null}
 
-                  <p className="mt-5 text-sm text-neutral-600">Up to 90% financing support available.*</p>
+                  <p className="mt-5 text-sm text-neutral-600">{copy.financeNote}</p>
 
                   <button
                     type="button"
                     onClick={handleConsultationClick}
                     className="btn-primary mt-6 inline-flex items-center justify-center gap-2"
                   >
-                    इस योजना के लिए मुफ्त परामर्श लें
+                    {copy.cta}
                     <ArrowRight className="h-4 w-4" />
                   </button>
                 </motion.div>
@@ -196,11 +256,8 @@ export default function Calculator({
                   exit={{ opacity: 0 }}
                   className="card border-dashed border-border bg-white/70"
                 >
-                  <h3 className="text-xl font-medium text-green-900">रिज़ल्ट यहाँ दिखाई देगा</h3>
-                  <p className="mt-3 text-sm text-neutral-600">
-                    Jaise hi aap monthly bill enter karenge, system size, monthly generation
-                    aur subsidy estimate yahin generate ho jayega.
-                  </p>
+                  <h3 className="text-xl font-medium text-green-900">{copy.emptyTitle}</h3>
+                  <p className="mt-3 text-sm text-neutral-600">{copy.emptyDescription}</p>
                 </motion.div>
               )}
             </AnimatePresence>

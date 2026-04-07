@@ -1,0 +1,1 @@
+export const ENABLE_HOME_COMMUNITY_SECTIONS = true;
